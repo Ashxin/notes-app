@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📝 Notes App</h1>
+      <p>Your personal cloud-synced notes</p>
+    </header>
+
+    <div id="authSection" class="auth-section">
+      <div class="auth-tabs">
+        <button id="loginTab" class="tab-btn active">Login</button>
+        <button id="signupTab" class="tab-btn">Sign Up</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="signupForm" class="auth-form hidden">
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password (min 6 characters)" required>
+        <input type="password" id="signupPasswordConfirm" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+    </div>
+
+    <div id="appSection" class="app-section hidden">
+      <div class="user-bar">
+        <span id="userEmail">user@email.com</span>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      </div>
+
+      <button id="newNoteBtn" class="notes-list">+ New Note<</button>
+      <div id="notesList" class="notes-list">
+        <p class="no-notes">No notes yet. Create your first note!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
