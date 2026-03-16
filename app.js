@@ -1,6 +1,5 @@
 // ===== FIREBASE CONFIGURATION =====
 const firebaseConfig = {
-    // ⚠️ PASTE YOUR CONFIG HERE (from Firebase Console)
   apiKey: "AIzaSyAIifkY6ncDcCTpYXycUXys769lDwoa760",
   authDomain: "notes-app-ash.firebaseapp.com",
   projectId: "notes-app-ash",
@@ -15,6 +14,8 @@ firebase.initializeApp(firebaseConfig);
 // Firebase services
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+document.addEventListener("DOMContentLoaded", function(){
 
 // ===== DOM ELEMENTS =====
 const authSection = document.querySelector("#authSection");
@@ -185,6 +186,7 @@ function getErrorMessage(errorCode) {
     return messages[errorCode] || "An error occurred. Please try again.";
 }
 
+});
 
 console.log("Notes App loaded!");
 console.log("Firebase initialized:", firebase.app().name);
