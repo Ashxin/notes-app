@@ -46,6 +46,23 @@
         <p class="no-notes">No notes yet. Create your first note!</p>
       </div>
     </div>
+
+    <div id="noteModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle">New Note</h2>
+          <button id="closeModal" class="close-btn"></button>
+        </div>
+        <form id="noteForm">
+          <input type="text" id="noteTitle" placeholder="Note Title" required maxlength="100">
+          <textarea id="noteContent" placeholder="Write your note here..." required rows="10"></textarea>
+          <div class="modal-actions">
+            <button type="button" id="cancelBtn" class="cancel-btn">Cancel</button>
+            <button type="submit" id="saveNoteBtn" class="save-btn">Save Note</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
