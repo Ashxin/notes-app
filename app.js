@@ -308,58 +308,70 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function loadNotes() {
         if (!currentUser) return;
+    
+    // NO .orderBy() - works without index!
         db.collection("notes")
-            .where("userId", "==", currentUser.uid)
-            .orderBy("updatedAt", "desc")
-            .onSnapshot(function(snapshot) {
-                displayNotes(snapshot.docs);
-            }, function(error) {
-                console.error("Error loading notes:", error);
+        .where("userId", "==", currentUser.uid)
+        .onSnapshot(function(snapshot) {
+            // Sort in JavaScript instead
+            let sortedDocs = snapshot.docs.sort(function(a, b) {
+                let aTime = a.data().updatedAt ? a.data().updatedAt.toMillis() : 0;
+                let bTime = b.data().updatedAt ? b.data().updatedAt.toMillis() : 0;
+                return bTime - aTime;
             });
-    }
-
-    function displayNotes(docs) {
-        notesList.innerHTML = "";
-
-        if(docs.length === 0) {
-            notesList.innerHTML = '<p class="no-notes">No notes yet. Create your first note!</p>';
-            return;
-        }
-
-        docs.forEach(function(doc) {
-            let note = doc.data();
-            let noteCard = document.createElement("div");
-            noteCard.className = "note-card";
-
-            let dateText = note.updatedAt ? formatDate(note.updatedAt.toDate()) : "Just now";
-
-            noteCard.innerHTML = `
-                <div class="note-card-header">
-                    <div>
-                        <h3 class="note-card-title">${escapeHtml(note.title)}</h3>
-                        <p class="note-card-date">${dateText}</p>
-                    </div>
-                </div>
-                <p class="note-card-content">${escapeHtml(note.content)}</p>
-                <div class="note-card-actions">
-                    <button class="edit-btn" data-id="${doc.id}">Edit</button>
-                    <button class="delete-note-btn" data-id="${doc.id}">Delete</button>
-                </div>
-            `;
-
-            noteCard.querySelector(".edit-btn").addEventListener("click", function(event) {
-                event.stopPropagation();
-                openNoteModal(doc.id);
-            });
-
-            noteCard.querySelector(".delete-note-btn").addEventListener("click", function(event) {
-                event.stopPropagation();
-                deleteNote(doc.id);
-            });
-
-            notesList.appendChild(notCard);
+            
+            displayNotes(sortedDocs);
+        }, function(error) {
+            console.error("Error loading notes:", error);
         });
     }
+
+    // Function to display notes
+function displayNotes(docs) {
+    notesList.innerHTML = "";
+    
+    if (docs.length === 0) {
+        notesList.innerHTML = '<p class="no-notes">No notes yet. Create your first note!</p>';
+        return;
+    }
+    
+    docs.forEach(function(doc) {
+        let note = doc.data();
+        let noteCard = document.createElement("div");  // ✅ noteCard (with 'e')
+        noteCard.className = "note-card";
+        
+        // Format date
+        let dateText = note.updatedAt ? formatDate(note.updatedAt.toDate()) : "Just now";
+        
+        noteCard.innerHTML = `
+            <div class="note-card-header">
+                <div>
+                    <h3 class="note-card-title">${escapeHtml(note.title)}</h3>
+                    <p class="note-card-date">${dateText}</p>
+                </div>
+            </div>
+            <p class="note-card-content">${escapeHtml(note.content)}</p>
+            <div class="note-card-actions">
+                <button class="edit-btn" data-id="${doc.id}">Edit</button>
+                <button class="delete-note-btn" data-id="${doc.id}">Delete</button>
+            </div>
+        `;
+        
+        // Edit button - ✅ noteCard (with 'e')
+        noteCard.querySelector(".edit-btn").addEventListener("click", function(event) {
+            event.stopPropagation();
+            openNoteModal(doc.id);
+        });
+        
+        // Delete button - ✅ noteCard (with 'e')
+        noteCard.querySelector(".delete-note-btn").addEventListener("click", function(event) {
+            event.stopPropagation();
+            deleteNote(doc.id);
+        });
+        
+        notesList.appendChild(noteCard);  // ✅ noteCard (with 'e')
+    });
+}
 
 
     function loadNoteForEdit(noteId) {
